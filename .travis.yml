@@ -1,30 +1,30 @@
 dist: xenial
-
 services:
-  - postgresql
+- postgresql
 addons:
-  postgresql: "9.4"
+  postgresql: '9.4'
 before_script:
-  - psql -U postgres -c "create user decide password 'decide'"
-  - psql -U postgres -c "create database test_decide owner decide"
-  - psql -U postgres -c "ALTER USER decide Superuser"
-  - psql test_decide -c "GRANT ALL ON ALL TABLES IN SCHEMA public to decide;"
-  - psql test_decide -c "GRANT ALL ON ALL SEQUENCES IN SCHEMA public to decide;"
-  - psql test_decide -c "GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to decide;"
+- psql -U postgres -c "create user decide password 'decide'"
+- psql -U postgres -c "create database test_decide owner decide"
+- psql -U postgres -c "ALTER USER decide Superuser"
+- psql test_decide -c "GRANT ALL ON ALL TABLES IN SCHEMA public to decide;"
+- psql test_decide -c "GRANT ALL ON ALL SEQUENCES IN SCHEMA public to decide;"
+- psql test_decide -c "GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to decide;"
 language: python
 python:
-  - "3.6"
+- '3.6'
 install:
-  - pip install -r requirements.txt
-  - pip install codacy-coverage
+- pip install -r requirements.txt
+- pip install codacy-coverage
 script:
-  - cd decide
-  - cp travis_local_settings.py local_settings.py
-  - coverage run --branch --source=. ./manage.py test census --keepdb
-  - coverage xml
-  - python-codacy-coverage -r coverage.xml
+- cd decide
+- cp travis_local_settings.py local_settings.py
+- coverage run --branch --source=. ./manage.py test census --keepdb
+- coverage xml
+- python-codacy-coverage -r coverage.xml
 deploy:
   provider: heroku
   app: proyecto-decide-manpercar1
   strategy: git
-  api_key: $HEROKU_AUTH_TOKEN
+  api_key:
+    secure: lPJgpp+dLdUGIJSws/NKYseDvBNvcKJowq5iErwtzqVSRZpbYgTw1r+P5LCJ/N+ZDYzlZXpyUUZ9KmTDaZ00U0m3k6LSjQaawje4oZGvBRTGG/rOGJKgsWcqYwIavarXXMQBV8AXbDZz3olNnFadSd1WI6rgmUELk4QkR1dVNHX4yhdljL/KUkymrTcRWsNdp5fkhgOBEEQPm4HsAdtOvQ28GN7VlBi4xLZ1x6jUGcquau5huGibYl56RXyDBDpKADJfnkhmupt8HauiwMrgDdh68EVgry6oGs6e6KVEtiA1RyOCsiAIfmbrrHiAXw519/X18zExS6HjL6uf6tnyEDg0T+GbRRuYaHIoeTQsUwKV7XQ4rBkxEHd7TMg1DeF97G8WkS822P1+4KzUfAvkS9WKAbcMJ48qTEIdW7mOXtAR596l8OzI5CuFtCqIhvvyZ7B5t1eeg6hfzq0lx3OJunQul6vVSOnCfmAOCXfn7PpGsnCKiv0eQSXgimQHCNmg3IrTGZ0KaZjxnmDUVKfTGD/4p4ZuIS6k6Lkiph4XYO5PQCar8+w1UY77gmYctRFpOqwdN53LfY66BLIsqn6P9J4dbfeBpme8t2G9RTh4+oHGElA4iqwlQWGrMvSSSJTQhQRAbDASeCwDBFJx3pJF6QJZb1K9WxbwSV0gu2IjK4M=
